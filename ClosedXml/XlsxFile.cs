@@ -2,29 +2,27 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClosedXml
 {
     internal class XlsxFile
     {
-        public static void GenerarArchivoExcel()
+        public static void GenerarArchivoExcel<T>(List<T> listado)
         {
             var ruta = ConfigurationManager.AppSettings["rutaExcel"];
 
-            if(ruta== null)
+            if (ruta == null)
             {
                 throw new Exception("No se encontró ruta para guardar el fichero.");
             }
 
-            using (var workbook = new XLWorkbook())
+            using(var workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add("Mi primer hoja");
-                worksheet.Cells("A1").Value = "Hello CoderAnonimo";
+                var sheet = workbook.Worksheets.Add("Informe");
+                sheet.Cell(1, 1).InsertData(listado);
                 workbook.SaveAs(ruta);
             }
+
         }
     }
 }
